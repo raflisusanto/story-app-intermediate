@@ -5,6 +5,7 @@
     <string name="hint_email">Masukkan email</string>
     <string name="hint_password">Masukkan password</string>
     <string name="login_page">Login</string>
+    <string name="dummy_btn_label">Dummy</string>
     <string name="login_desc">Silahkan login terlebih dahulu</string>
     <string name="login_tail_desc">Belum punya akun? Silahkan DAFTAR</string>
     <string name="register_page">Daftar</string>

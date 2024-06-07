@@ -30,11 +30,11 @@
 
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="match_parent"
-        android:layout_height="237dp"
+        android:layout_width="294dp"
+        android:layout_height="128dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/desc_logo"
-        android:src="@drawable/image" />
+        android:src="@drawable/logo_dicoding" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilName"
@@ -107,12 +107,10 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnRegister"
+    <com.example.storyappsubmission.ui.view.ButtonWithLoading
+        android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxWidth="320dp"
-        android:text="@string/register_page" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
