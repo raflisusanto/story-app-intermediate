@@ -2,21 +2,21 @@ package com.example.storyappsubmission.ui
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.storyappsubmission.R
-import com.example.storyappsubmission.data.remote.TokenManager
-import com.example.storyappsubmission.data.remote.dataStore
 import com.example.storyappsubmission.databinding.ActivityRegisterBinding
-import com.example.storyappsubmission.helper.ViewModelFactory
 import com.example.storyappsubmission.helper.setupCombinedText
 import com.example.storyappsubmission.helper.setupEmailValidation
 import com.example.storyappsubmission.helper.setupPasswordValidation
 import com.example.storyappsubmission.helper.showToast
 import com.example.storyappsubmission.viewmodel.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,14 +27,6 @@ class RegisterActivity : AppCompatActivity() {
         setupPasswordValidation(binding.cvPassword, binding.tilPassword)
         setupEmailValidation(binding.etEmail, binding.tilEmail)
         setupCombinedText(binding.tvTailing, R.string.register_tail_desc, MainActivity::class.java)
-
-        // ViewModels
-        val pref = TokenManager.getInstance(application.dataStore)
-        val factory = ViewModelFactory.getInstance(pref)
-        val authViewModel = ViewModelProvider(
-            this,
-            factory
-        )[AuthViewModel::class.java]
 
         authViewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {

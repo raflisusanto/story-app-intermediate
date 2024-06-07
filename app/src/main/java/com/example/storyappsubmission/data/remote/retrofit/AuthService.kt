@@ -5,7 +5,7 @@ import com.example.storyappsubmission.data.remote.response.AuthResponse
 import retrofit2.Call
 import retrofit2.http.*
 
-interface ApiService {
+interface AuthService {
     @POST("login")
     fun login(
         @Body loginRequest: AuthRequest,

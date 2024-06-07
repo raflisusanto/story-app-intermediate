@@ -6,17 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.storyappsubmission.data.remote.TokenManager
-import com.example.storyappsubmission.data.remote.request.AuthRequest
-import com.example.storyappsubmission.data.remote.response.AuthResponse
 import com.example.storyappsubmission.data.remote.response.ErrorResponse
-import com.example.storyappsubmission.data.remote.retrofit.ApiConfig
-import com.google.gson.Gson
+import com.example.storyappsubmission.domain.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import javax.inject.Inject
 
-class AuthViewModel(private val pref: TokenManager) : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val pref: TokenManager,
+    private val repository: AuthRepository
+) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -27,82 +27,34 @@ class AuthViewModel(private val pref: TokenManager) : ViewModel() {
 
     fun login(email: String, password: String, onSuccess: () -> Unit) {
         _isLoading.value = true
+        repository.login(email, password, onSuccess = { authResponse ->
+            Log.d(TAG, "onResponse: ${authResponse.message}")
 
-        val loginRequest = AuthRequest(email = email, password = password)
-        val client = ApiConfig.getApiService().login(loginRequest)
+            _token.value = authResponse.loginResult!!.token
+            onSuccess()
+            saveToken()
 
-        client.enqueue(object : Callback<AuthResponse> {
-            override fun onResponse(
-                call: Call<AuthResponse>,
-                response: Response<AuthResponse>
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        val token = responseBody.loginResult!!.token
-                        _token.value = token
-
-                        saveToken()
-                        onSuccess()
-
-                        Log.d(TAG, "onResponse: ${responseBody.message}")
-                    }
-                } else {
-                    val responseError = response.errorBody()
-                    responseError?.let {
-                        val errorResponse = Gson().fromJson(it.string(), ErrorResponse::class.java)
-                        _errorToast.value = errorResponse?.message ?: "Terjadi Kesalahan Server"
-                        Log.e(TAG, "onFailureResponse: ${errorResponse.message}")
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
-                _isLoading.value = false
-                Log.e(TAG, "onFailure: ${t.message}")
-                _errorToast.value = t.message
-            }
+            _isLoading.value = false
+        }, onError = { errorResponse ->
+            showError(errorResponse)
+            _isLoading.value = false
         })
     }
 
     fun register(name: String, email: String, password: String, onSuccess: () -> Unit) {
         _isLoading.value = true
 
-        val registerRequest = AuthRequest(email = email, password = password, name = name)
-        val client = ApiConfig.getApiService().register(registerRequest)
-
-        client.enqueue(object : Callback<AuthResponse> {
-            override fun onResponse(
-                call: Call<AuthResponse>,
-                response: Response<AuthResponse>
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        onSuccess()
-                        Log.d(TAG, "onResponse: ${responseBody.message}")
-                    }
-                } else {
-                    val responseError = response.errorBody()
-                    responseError?.let {
-                        val errorResponse = Gson().fromJson(it.string(), AuthResponse::class.java)
-                        _errorToast.value = errorResponse.message
-                        Log.e(TAG, "onFailureResponse: ${errorResponse.message}")
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
-                _isLoading.value = false
-                Log.e(TAG, "onFailure: ${t.message}")
-                _errorToast.value = t.message
-            }
+        repository.register(name, email, password, onSuccess = { authResponse ->
+            Log.d(TAG, "onResponse: ${authResponse.message}")
+            onSuccess()
+            _isLoading.value = false
+        }, onError = { errorResponse ->
+            showError(errorResponse)
+            _isLoading.value = false
         })
     }
 
-    fun saveToken() {
+    private fun saveToken() {
         viewModelScope.launch {
             Log.d("AuthViewModel", "saveToken: ${_token.value}")
             pref.saveToken(_token.value!!)
@@ -122,6 +74,13 @@ class AuthViewModel(private val pref: TokenManager) : ViewModel() {
 
             }
         }
+    }
+
+    private fun showError(errorResponse: ErrorResponse) {
+        val errorMessage = errorResponse.message!!
+        _errorToast.value = errorMessage
+
+        Log.e(TAG, "onErrorResponse: ${errorResponse.message}")
     }
 
     companion object {
