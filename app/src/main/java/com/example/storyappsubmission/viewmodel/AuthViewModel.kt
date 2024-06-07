@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.storyappsubmission.data.TokenManager
 import com.example.storyappsubmission.data.request.AuthRequest
 import com.example.storyappsubmission.data.response.AuthResponse
+import com.example.storyappsubmission.data.response.ErrorResponse
 import com.example.storyappsubmission.data.retrofit.ApiConfig
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -50,8 +51,8 @@ class AuthViewModel(private val pref: TokenManager) : ViewModel() {
                 } else {
                     val responseError = response.errorBody()
                     responseError?.let {
-                        val errorResponse = Gson().fromJson(it.string(), AuthResponse::class.java)
-                        _errorToast.value = errorResponse.message
+                        val errorResponse = Gson().fromJson(it.string(), ErrorResponse::class.java)
+                        _errorToast.value = errorResponse?.message ?: "Terjadi Kesalahan Server"
                         Log.e(TAG, "onFailureResponse: ${errorResponse.message}")
                     }
                 }
