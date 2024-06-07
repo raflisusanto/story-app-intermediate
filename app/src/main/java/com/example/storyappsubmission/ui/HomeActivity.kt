@@ -1,4 +1,4 @@
-package com.example.storyappsubmission.ui.view
+package com.example.storyappsubmission.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

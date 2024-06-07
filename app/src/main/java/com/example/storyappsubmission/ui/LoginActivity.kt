@@ -10,7 +10,6 @@ import com.example.storyappsubmission.helper.setupCombinedText
 import com.example.storyappsubmission.helper.setupEmailValidation
 import com.example.storyappsubmission.helper.setupPasswordValidation
 import com.example.storyappsubmission.helper.showToast
-import com.example.storyappsubmission.ui.view.HomeActivity
 import com.example.storyappsubmission.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
