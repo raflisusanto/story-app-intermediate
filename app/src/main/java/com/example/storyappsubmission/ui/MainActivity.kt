@@ -18,11 +18,10 @@ class MainActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(pref)
         val authViewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
 
-        if (!authViewModel.token.value.isNullOrEmpty()) {
+        authViewModel.getToken({
             startActivity(Intent(this@MainActivity, HomeActivity::class.java))
-        } else {
+        }, {
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-        }
-
+        })
     }
 }

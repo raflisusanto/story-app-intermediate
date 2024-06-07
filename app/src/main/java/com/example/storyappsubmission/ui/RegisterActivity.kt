@@ -59,13 +59,10 @@ class RegisterActivity : AppCompatActivity() {
                 binding.etEmail.error == null && binding.cvPassword.error == null
 
             if (isNotEmpty && isNotError) {
-                val registerSuccess = authViewModel.register(name, email, password)
-
-                if (registerSuccess) {
-                    "Pendaftaran Berhasil, silahkan Login".showToast(this)
-                    startActivity(Intent(this, LoginActivity::class.java))
+                authViewModel.register(name, email, password) {
+                    "Pendaftaran Berhasil, silahkan Login".showToast(this@RegisterActivity)
+                    startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                 }
-
             } else {
                 val errorMessage = "Data tidak valid, coba isi lagi ya"
                 errorMessage.showToast(this)

@@ -63,8 +63,10 @@ class LoginActivity : AppCompatActivity() {
                 binding.etEmail.error == null && binding.cvPassword.error == null
 
             if (isNotEmpty && isNotError) {
-                val loginSuccess = authViewModel.login(email, password)
-                if (loginSuccess) startActivity(Intent(this, HomeActivity::class.java))
+                authViewModel.login(email, password) {
+                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                    startActivity(intent)
+                }
             } else {
                 val errorMessage = "Data tidak valid, coba isi lagi ya"
                 errorMessage.showToast(this)
