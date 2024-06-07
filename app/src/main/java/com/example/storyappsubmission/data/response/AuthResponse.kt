@@ -15,11 +15,11 @@ data class AuthResponse(
 
 data class User(
     @field:SerializedName("userId")
-    val login: String,
+    val userId: String,
 
     @field:SerializedName("name")
-    val avatarUrl: String,
+    val name: String,
 
     @field:SerializedName("token")
-    val htmlUrl: String,
+    val token: String,
 )

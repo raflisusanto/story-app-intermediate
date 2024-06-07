@@ -8,7 +8,7 @@
     android:background="#F1F1F1"
     android:orientation="vertical"
     android:padding="18dp"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.LoginActivity">
 
     <TextView
         android:id="@+id/tvLogin"

@@ -7,26 +7,32 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.storyappsubmission.R
 import com.example.storyappsubmission.data.TokenManager
 import com.example.storyappsubmission.data.dataStore
-import com.example.storyappsubmission.databinding.ActivityRegisterBinding
+import com.example.storyappsubmission.databinding.ActivityLoginBinding
 import com.example.storyappsubmission.helper.ViewModelFactory
 import com.example.storyappsubmission.helper.setupCombinedText
 import com.example.storyappsubmission.helper.setupEmailValidation
 import com.example.storyappsubmission.helper.setupPasswordValidation
 import com.example.storyappsubmission.helper.showToast
+import com.example.storyappsubmission.ui.view.HomeActivity
 import com.example.storyappsubmission.viewmodel.AuthViewModel
 
-class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegisterBinding
+class LoginActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
-        binding.btnSubmit.setButtonLabel("Daftar")
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding.btnSubmit.setButtonLabel("Login")
         setContentView(binding.root)
 
-        setupPasswordValidation(binding.cvPassword, binding.tilPassword)
+        // Validation in TextInputLayout
         setupEmailValidation(binding.etEmail, binding.tilEmail)
-        setupCombinedText(binding.tvTailing, R.string.register_tail_desc, MainActivity::class.java)
+        setupPasswordValidation(binding.cvPassword, binding.tilPassword)
+        setupCombinedText(
+            binding.tvTailing,
+            R.string.login_tail_desc,
+            RegisterActivity::class.java
+        )
 
         // ViewModels
         val pref = TokenManager.getInstance(application.dataStore)
@@ -48,24 +54,17 @@ class RegisterActivity : AppCompatActivity() {
             errorMessage?.showToast(this)
         }
 
+        // Login
         binding.btnSubmit.setOnClick {
             val email = binding.etEmail.text.toString()
             val password = binding.cvPassword.text.toString()
-            val name = binding.etName.text.toString()
-
-            val isNotEmpty: Boolean =
-                email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()
+            val isNotEmpty: Boolean = email.isNotEmpty() && password.isNotEmpty()
             val isNotError: Boolean =
                 binding.etEmail.error == null && binding.cvPassword.error == null
 
             if (isNotEmpty && isNotError) {
-                val registerSuccess = authViewModel.register(name, email, password)
-
-                if (registerSuccess) {
-                    "Pendaftaran Berhasil, silahkan Login".showToast(this)
-                    startActivity(Intent(this, LoginActivity::class.java))
-                }
-
+                val loginSuccess = authViewModel.login(email, password)
+                if (loginSuccess) startActivity(Intent(this, HomeActivity::class.java))
             } else {
                 val errorMessage = "Data tidak valid, coba isi lagi ya"
                 errorMessage.showToast(this)
