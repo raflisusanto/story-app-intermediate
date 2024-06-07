@@ -1,4 +1,4 @@
-package com.example.storyappsubmission.data.retrofit
+package com.example.storyappsubmission.data.remote.retrofit
 
 import com.example.storyappsubmission.BuildConfig
 import okhttp3.OkHttpClient

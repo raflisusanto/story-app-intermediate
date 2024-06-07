@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.storyappsubmission.data.TokenManager
-import com.example.storyappsubmission.data.request.AuthRequest
-import com.example.storyappsubmission.data.response.AuthResponse
-import com.example.storyappsubmission.data.response.ErrorResponse
-import com.example.storyappsubmission.data.retrofit.ApiConfig
+import com.example.storyappsubmission.data.remote.TokenManager
+import com.example.storyappsubmission.data.remote.request.AuthRequest
+import com.example.storyappsubmission.data.remote.response.AuthResponse
+import com.example.storyappsubmission.data.remote.response.ErrorResponse
+import com.example.storyappsubmission.data.remote.retrofit.ApiConfig
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.Call

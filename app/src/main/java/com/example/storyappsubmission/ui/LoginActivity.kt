@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.storyappsubmission.R
-import com.example.storyappsubmission.data.TokenManager
-import com.example.storyappsubmission.data.dataStore
+import com.example.storyappsubmission.data.remote.TokenManager
+import com.example.storyappsubmission.data.remote.dataStore
 import com.example.storyappsubmission.databinding.ActivityLoginBinding
 import com.example.storyappsubmission.helper.ViewModelFactory
 import com.example.storyappsubmission.helper.setupCombinedText

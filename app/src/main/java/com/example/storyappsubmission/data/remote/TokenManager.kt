@@ -1,4 +1,4 @@
-package com.example.storyappsubmission.data
+package com.example.storyappsubmission.data.remote
 
 import android.content.Context
 import androidx.datastore.core.DataStore

@@ -1,7 +1,7 @@
-package com.example.storyappsubmission.data.retrofit
+package com.example.storyappsubmission.data.remote.retrofit
 
-import com.example.storyappsubmission.data.request.AuthRequest
-import com.example.storyappsubmission.data.response.AuthResponse
+import com.example.storyappsubmission.data.remote.request.AuthRequest
+import com.example.storyappsubmission.data.remote.response.AuthResponse
 import retrofit2.Call
 import retrofit2.http.*
 

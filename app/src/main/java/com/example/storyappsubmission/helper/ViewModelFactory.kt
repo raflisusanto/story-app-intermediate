@@ -2,7 +2,7 @@ package com.example.storyappsubmission.helper
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.storyappsubmission.data.TokenManager
+import com.example.storyappsubmission.data.remote.TokenManager
 import com.example.storyappsubmission.viewmodel.AuthViewModel
 
 class ViewModelFactory private constructor(
