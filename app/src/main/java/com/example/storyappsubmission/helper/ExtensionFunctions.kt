@@ -10,9 +10,13 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 fun AppCompatActivity.setupCombinedText(tvCombinedText: TextView, textResource: Int, targetActivity: Class<*>) {
     val combinedText = getString(textResource)
@@ -37,4 +41,11 @@ fun AppCompatActivity.setupCombinedText(tvCombinedText: TextView, textResource: 
 
 fun String.showToast(context: Context, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(context, this, duration).show()
+}
+
+fun ImageView.loadImage(url: String) {
+    Glide.with(this.context)
+        .load(url)
+        .transform(CenterCrop(), RoundedCorners(8))
+        .into(this)
 }
