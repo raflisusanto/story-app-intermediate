@@ -8,6 +8,8 @@ import com.example.storyappsubmission.data.remote.response.ErrorResponse
 import com.example.storyappsubmission.data.remote.response.ListStoryItem
 import com.example.storyappsubmission.domain.repository.StoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,14 +25,14 @@ class StoryViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _errorToast = MutableLiveData<String>()
-    val errorToast: LiveData<String> = _errorToast
+    private val _feedbackToast = MutableLiveData<String>()
+    val feedbackToast: LiveData<String> = _feedbackToast
 
     init {
         getAllStories()
     }
 
-    private fun getAllStories() {
+    fun getAllStories() {
         _isLoading.value = true
         repository.getAllStories(onSuccess = { storyResponse ->
             Log.d(TAG, "onResponse: ${storyResponse.message}")
@@ -54,9 +56,27 @@ class StoryViewModel @Inject constructor(
         })
     }
 
+    fun addNewStory(
+        file: MultipartBody.Part,
+        description: RequestBody,
+        onSuccess: () -> Unit
+    ) {
+        _isLoading.value = true
+        repository.addNewStory(file, description, onSuccess = { storyResponse ->
+            Log.d(TAG, "onResponse: ${storyResponse.message}")
+            _feedbackToast.value = storyResponse.message
+            _isLoading.value = false
+
+            onSuccess()
+        }, onError = { errorResponse ->
+            showError(errorResponse)
+            _isLoading.value = false
+        })
+    }
+
     private fun showError(errorResponse: ErrorResponse) {
         val errorMessage = errorResponse.message!!
-        _errorToast.value = errorMessage
+        _feedbackToast.value = errorMessage
 
         Log.e(TAG, "onErrorResponse: ${errorResponse.message}")
     }

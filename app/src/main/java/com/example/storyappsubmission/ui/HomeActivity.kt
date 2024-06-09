@@ -44,10 +44,15 @@ class HomeActivity : AppCompatActivity() {
             else binding.progressBar.visibility = View.GONE
         }
 
-        storyViewModel.errorToast.observe(this) { errorMessage ->
+        storyViewModel.feedbackToast.observe(this) { errorMessage ->
             errorMessage?.showToast(this)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        storyViewModel.getAllStories()
     }
 
     private fun setStoriesData(storiesList: List<ListStoryItem>) {

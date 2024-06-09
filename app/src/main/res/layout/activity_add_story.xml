@@ -78,7 +78,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextTextMultiLine"
+            android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="Masukkan deskripsi"
@@ -88,13 +88,10 @@
             android:inputType="textMultiLine"
             android:minHeight="48dp" />
 
-        <Button
-            android:id="@+id/btnSubmit"
+        <com.example.storyappsubmission.ui.view.ButtonWithLoading
+            android:id="@+id/btnUpload"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="@string/label_submit_story"
-            tools:ignore="ButtonStyle" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
