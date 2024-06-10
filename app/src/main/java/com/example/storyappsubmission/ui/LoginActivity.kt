@@ -57,8 +57,8 @@ class LoginActivity : AppCompatActivity() {
             if (isNotEmpty && isNotError) {
                 authViewModel.login(email, password) {
                     val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
-                    finish()
                 }
             } else {
                 val errorMessage = "Data tidak valid, coba isi lagi ya"
