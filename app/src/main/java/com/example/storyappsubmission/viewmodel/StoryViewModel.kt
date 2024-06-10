@@ -36,7 +36,7 @@ class StoryViewModel @Inject constructor(
         _isLoading.value = true
         repository.getAllStories(onSuccess = { storyResponse ->
             Log.d(TAG, "onResponse: ${storyResponse.message}")
-            _listStories.value = storyResponse.listStory
+            _listStories.value = storyResponse.listStory!!
             _isLoading.value = false
         }, onError = { errorResponse ->
             showError(errorResponse)
