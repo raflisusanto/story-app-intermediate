@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StoryAppSubmission</string>
+    <string name="desc_logo">App Logo</string>
+    <string name="hint_name">Enter name</string>
+    <string name="hint_email">Enter email</string>
+    <string name="hint_password">Enter password</string>
+    <string name="login_page">Login</string>
+    <string name="dummy_btn_label">Dummy</string>
+    <string name="login_desc">Login to continue</string>
+    <string name="login_tail_desc">Don\'t have an account?\u00A0\u00A0 REGISTER</string>
+    <string name="register_page">Register</string>
+    <string name="register_desc">Register to continue</string>
+    <string name="register_tail_desc">Already have an account? LOGIN</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="story_not_found">No stories found</string>
+    <string name="dummy_text">TextView</string>
+    <string name="uploaded_image">Uploaded Image</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="description_question">Description</string>
+    <string name="desc_hint">Enter description</string>
+    <string name="go_to_add_story">To Add Story</string>
+    <string name="thumbnail_question">Thumbnail</string>
+    <string name="add_story_page">Add Story</string>
+    <string name="label_submit_story">Submit Story</string>
+    <string name="logout">Logout</string>
+</resources>
