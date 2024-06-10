@@ -19,9 +19,6 @@ class StoryViewModel @Inject constructor(
     private val _listStories = MutableLiveData<List<ListStoryItem>>()
     val listStories: LiveData<List<ListStoryItem>> = _listStories
 
-    private val _selectedStory = MutableLiveData<ListStoryItem>()
-    val selectedStory: LiveData<ListStoryItem> = _selectedStory
-
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -37,18 +34,6 @@ class StoryViewModel @Inject constructor(
         repository.getAllStories(onSuccess = { storyResponse ->
             Log.d(TAG, "onResponse: ${storyResponse.message}")
             _listStories.value = storyResponse.listStory!!
-            _isLoading.value = false
-        }, onError = { errorResponse ->
-            showError(errorResponse)
-            _isLoading.value = false
-        })
-    }
-
-    fun getStoryDetailById(id: String) {
-        _isLoading.value = true
-        repository.getStoryById(id, onSuccess = { storyResponse ->
-            Log.d(TAG, "onResponse: ${storyResponse.message}")
-            _selectedStory.value = storyResponse.story!!
             _isLoading.value = false
         }, onError = { errorResponse ->
             showError(errorResponse)

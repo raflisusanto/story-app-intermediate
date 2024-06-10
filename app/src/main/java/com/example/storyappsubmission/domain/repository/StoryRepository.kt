@@ -11,11 +11,6 @@ interface StoryRepository {
         onError: (ErrorResponse) -> Unit
     )
 
-    fun getStoryById(
-        id: String, onSuccess: (ListStoryResponse) -> Unit,
-        onError: (ErrorResponse) -> Unit
-    )
-
     fun addNewStory(
         file: MultipartBody.Part,
         description: RequestBody,

@@ -12,7 +12,6 @@ import com.example.storyappsubmission.viewmodel.StoryViewModel
 
 class StoryDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryDetailBinding
-    private val storyViewModel: StoryViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

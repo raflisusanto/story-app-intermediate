@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "token")
 
+@Suppress("PrivatePropertyName")
 class TokenManager(private val dataStore: DataStore<Preferences>) {
     private val TOKEN_KEY = stringPreferencesKey("token")
 
