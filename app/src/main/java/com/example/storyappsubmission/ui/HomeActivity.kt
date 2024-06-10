@@ -6,10 +6,12 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.storyappsubmission.R
 import com.example.storyappsubmission.data.remote.response.ListStoryItem
 import com.example.storyappsubmission.databinding.ActivityHomeBinding
 import com.example.storyappsubmission.helper.showToast
 import com.example.storyappsubmission.ui.adapter.StoryAdapter
+import com.example.storyappsubmission.viewmodel.AuthViewModel
 import com.example.storyappsubmission.viewmodel.StoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,11 +20,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private val storyViewModel: StoryViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initializeToolbar()
 
         // Setup FAB
         binding.fabAddStory.setOnClickListener {
@@ -62,5 +67,26 @@ class HomeActivity : AppCompatActivity() {
 
         if (storiesList.isEmpty()) binding.tvEmpty.visibility = View.VISIBLE
         else binding.tvEmpty.visibility = View.GONE
+    }
+
+    private fun initializeToolbar() {
+        with(binding) {
+            toolbar.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.logout -> {
+                        removeSession()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+    }
+
+    private fun removeSession() {
+        authViewModel.removeToken {
+            startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
+            finish()
+        }
     }
 }

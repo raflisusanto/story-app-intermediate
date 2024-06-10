@@ -76,6 +76,14 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun removeToken(onTokenRemoved: () -> Unit) {
+        viewModelScope.launch {
+            pref.removeToken()
+            _token.value = ""
+            onTokenRemoved()
+        }
+    }
+
     private fun showError(errorResponse: ErrorResponse) {
         val errorMessage = errorResponse.message!!
         _errorToast.value = errorMessage

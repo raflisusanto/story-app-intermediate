@@ -26,4 +26,10 @@ class TokenManager(private val dataStore: DataStore<Preferences>) {
         }
     }
 
+    suspend fun removeToken() {
+        dataStore.edit { preferences ->
+            preferences.remove(TOKEN_KEY)
+        }
+    }
+
 }
