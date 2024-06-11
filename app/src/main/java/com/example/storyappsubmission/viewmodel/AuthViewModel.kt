@@ -10,6 +10,7 @@ import com.example.storyappsubmission.data.remote.response.ErrorResponse
 import com.example.storyappsubmission.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,10 +56,8 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun saveToken() {
-        viewModelScope.launch {
-            Log.d("AuthViewModel", "saveToken: ${_token.value}")
-            pref.saveToken(_token.value!!)
-        }
+        Log.d("AuthViewModel", "saveToken: ${_token.value}")
+        runBlocking { pref.saveToken(_token.value!!) }
     }
 
     fun getToken(onTokenExist: () -> Unit, onTokenNotExist: () -> Unit) {
