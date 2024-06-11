@@ -4,12 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.storyappsubmission.data.remote.TokenManager
 import com.example.storyappsubmission.data.remote.response.ErrorResponse
 import com.example.storyappsubmission.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -61,22 +60,18 @@ class AuthViewModel @Inject constructor(
     }
 
     fun getToken(onTokenExist: () -> Unit, onTokenNotExist: () -> Unit) {
-        viewModelScope.launch {
-            pref.getToken().collect {
-                _token.value = it
-
-                if (_token.value.isNullOrEmpty()) {
-                    onTokenNotExist()
-                } else {
-                    onTokenExist()
-                }
-
+        runBlocking {
+            _token.value = pref.getToken().first()
+            if (_token.value.isNullOrEmpty()) {
+                onTokenNotExist()
+            } else {
+                onTokenExist()
             }
         }
     }
 
     fun removeToken(onTokenRemoved: () -> Unit) {
-        viewModelScope.launch {
+        runBlocking {
             pref.removeToken()
             _token.value = ""
             onTokenRemoved()
