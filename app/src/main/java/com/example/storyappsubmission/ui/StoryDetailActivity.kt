@@ -2,13 +2,11 @@ package com.example.storyappsubmission.ui
 
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.storyappsubmission.data.remote.response.ListStoryItem
 import com.example.storyappsubmission.databinding.ActivityStoryDetailBinding
 import com.example.storyappsubmission.helper.loadImage
 import com.example.storyappsubmission.ui.adapter.StoryAdapter
-import com.example.storyappsubmission.viewmodel.StoryViewModel
 
 class StoryDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryDetailBinding
@@ -19,7 +17,7 @@ class StoryDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Requires Tiramisu (SDK >= 33)
-        var story: ListStoryItem? = null
+        @Suppress("CanBeVal") var story: ListStoryItem?
         if (Build.VERSION.SDK_INT >= 33) {
             story = intent.getParcelableExtra(StoryAdapter.EXTRA_STORY, ListStoryItem::class.java)
         } else {

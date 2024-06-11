@@ -8,7 +8,6 @@ import com.example.storyappsubmission.R
 import com.example.storyappsubmission.databinding.ActivityLoginBinding
 import com.example.storyappsubmission.helper.setupCombinedText
 import com.example.storyappsubmission.helper.setupEmailValidation
-import com.example.storyappsubmission.helper.setupPasswordValidation
 import com.example.storyappsubmission.helper.showToast
 import com.example.storyappsubmission.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +25,6 @@ class LoginActivity : AppCompatActivity() {
 
         // Validation in TextInputLayout
         setupEmailValidation(binding.etEmail, binding.tilEmail)
-        setupPasswordValidation(binding.cvPassword, binding.tilPassword)
         setupCombinedText(
             binding.tvTailing,
             R.string.login_tail_desc,
@@ -50,19 +48,11 @@ class LoginActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClick {
             val email = binding.etEmail.text.toString()
             val password = binding.cvPassword.text.toString()
-            val isNotEmpty: Boolean = email.isNotEmpty() && password.isNotEmpty()
-            val isNotError: Boolean =
-                binding.etEmail.error == null && binding.cvPassword.error == null
 
-            if (isNotEmpty && isNotError) {
-                authViewModel.login(email, password) {
-                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                }
-            } else {
-                val errorMessage = "Data tidak valid, coba isi lagi ya"
-                errorMessage.showToast(this)
+            authViewModel.login(email, password) {
+                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
             }
         }
     }

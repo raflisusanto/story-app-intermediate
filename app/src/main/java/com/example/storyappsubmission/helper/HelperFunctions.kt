@@ -32,16 +32,6 @@ fun setupEmailValidation(etEmail: EditText, tilEmail: TextInputLayout) {
     }
 }
 
-fun setupPasswordValidation(cvPassword: EditText, tilPassword: TextInputLayout) {
-    cvPassword.doOnTextChanged { text, _, _, _ ->
-        if (text.toString().length < 8) {
-            tilPassword.error = "Password harus lebih dari 8 karakter"
-        } else {
-            tilPassword.error = null
-        }
-    }
-}
-
 fun getImageUri(context: Context): Uri {
     var uri: Uri? = null
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

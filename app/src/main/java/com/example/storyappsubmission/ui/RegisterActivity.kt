@@ -8,7 +8,6 @@ import com.example.storyappsubmission.R
 import com.example.storyappsubmission.databinding.ActivityRegisterBinding
 import com.example.storyappsubmission.helper.setupCombinedText
 import com.example.storyappsubmission.helper.setupEmailValidation
-import com.example.storyappsubmission.helper.setupPasswordValidation
 import com.example.storyappsubmission.helper.showToast
 import com.example.storyappsubmission.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +23,6 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnSubmit.setButtonLabel("Daftar")
         setContentView(binding.root)
 
-        setupPasswordValidation(binding.cvPassword, binding.tilPassword)
         setupEmailValidation(binding.etEmail, binding.tilEmail)
         setupCombinedText(binding.tvTailing, R.string.register_tail_desc, MainActivity::class.java)
 
@@ -45,19 +43,9 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.cvPassword.text.toString()
             val name = binding.etName.text.toString()
 
-            val isNotEmpty: Boolean =
-                email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()
-            val isNotError: Boolean =
-                binding.etEmail.error == null && binding.cvPassword.error == null
-
-            if (isNotEmpty && isNotError) {
-                authViewModel.register(name, email, password) {
-                    "Pendaftaran Berhasil, silahkan Login".showToast(this@RegisterActivity)
-                    startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                }
-            } else {
-                val errorMessage = "Data tidak valid, coba isi lagi ya"
-                errorMessage.showToast(this)
+            authViewModel.register(name, email, password) {
+                "Pendaftaran Berhasil, silahkan Login".showToast(this@RegisterActivity)
+                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
             }
         }
     }

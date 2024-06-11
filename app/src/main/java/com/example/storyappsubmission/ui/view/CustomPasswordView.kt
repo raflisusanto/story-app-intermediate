@@ -56,15 +56,13 @@ class CustomPasswordView @JvmOverloads constructor(
         return true
     }
 
-    // Sebenernya bisa pakai ini tapi jelek gabisa ada toggle visibility
-    // Karena terhalang icon error, kalau misal harus ada ini nanti saya uncomment aja
-    //        override fun onTextChanged(
-    //            text: CharSequence?,
-    //            start: Int,
-    //            lengthBefore: Int,
-    //            lengthAfter: Int
-    //        ) {
-    //            super.onTextChanged(text, start, lengthBefore, lengthAfter)
-    //            if (text != null && text.length < 8) error = "Password Minimal 8 Karakter"
-    //        }
+    override fun onTextChanged(
+        text: CharSequence?,
+        start: Int,
+        lengthBefore: Int,
+        lengthAfter: Int
+    ) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter)
+        if (text != null && text.length < 8) setError("Password Minimal 8 Karakter", null)
+    }
 }
