@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.example.storyappsubmission.databinding.ActivityAddStoryBinding
 import com.example.storyappsubmission.helper.getImageUri
+import com.example.storyappsubmission.helper.reduceFileImage
 import com.example.storyappsubmission.helper.showToast
 import com.example.storyappsubmission.helper.uriToFile
 import com.example.storyappsubmission.viewmodel.StoryViewModel
@@ -110,7 +111,7 @@ class AddStoryActivity : AppCompatActivity() {
         currentImageUri?.let { uri ->
             if (binding.etDescription.text.toString().isEmpty()) return
 
-            val imageFile = uriToFile(uri, this)
+            val imageFile = uriToFile(uri, this).reduceFileImage()
             val description = binding.etDescription.text.toString()
 
             val requestBody = description.toRequestBody("text/plain".toMediaType())
