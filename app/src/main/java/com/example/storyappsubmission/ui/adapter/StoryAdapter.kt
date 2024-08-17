@@ -5,15 +5,17 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+// import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.storyappsubmission.data.remote.response.ListStoryItem
 import com.example.storyappsubmission.databinding.StoryCardBinding
 import com.example.storyappsubmission.helper.loadImage
 import com.example.storyappsubmission.ui.StoryDetailActivity
 
-class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
+// class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK)
+class StoryAdapter : PagingDataAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DIFF_CALLBACK){
     class StoryViewHolder(val binding: StoryCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(story: ListStoryItem){
             with(binding) {
@@ -34,22 +36,24 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.StoryViewHolder>(DI
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         val story = getItem(position)
-        holder.bind(story)
+        if (story != null) {
+            holder.bind(story)
 
-        // Navigate to Detail Listener
-        holder.itemView.setOnClickListener {
-            val context = holder.itemView.context
-            val optionsCompat: ActivityOptionsCompat =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    context as Activity,
-                    androidx.core.util.Pair(holder.binding.ivThumbnail, "thumbnail"),
-                    androidx.core.util.Pair(holder.binding.tvCardTitle, "title"),
-                    androidx.core.util.Pair(holder.binding.tvCardDesc, "desc"),
-                )
+            // Navigate to Detail Listener
+            holder.itemView.setOnClickListener {
+                val context = holder.itemView.context
+                val optionsCompat: ActivityOptionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        context as Activity,
+                        androidx.core.util.Pair(holder.binding.ivThumbnail, "thumbnail"),
+                        androidx.core.util.Pair(holder.binding.tvCardTitle, "title"),
+                        androidx.core.util.Pair(holder.binding.tvCardDesc, "desc"),
+                    )
 
-            val goToUserDetailsActivity = Intent(context, StoryDetailActivity::class.java)
-            goToUserDetailsActivity.putExtra(EXTRA_STORY, story)
-            context.startActivity(goToUserDetailsActivity, optionsCompat.toBundle())
+                val goToUserDetailsActivity = Intent(context, StoryDetailActivity::class.java)
+                goToUserDetailsActivity.putExtra(EXTRA_STORY, story)
+                context.startActivity(goToUserDetailsActivity, optionsCompat.toBundle())
+            }
         }
     }
 

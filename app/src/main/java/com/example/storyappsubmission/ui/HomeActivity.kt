@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.storyappsubmission.R
-import com.example.storyappsubmission.data.remote.response.ListStoryItem
+// import com.example.storyappsubmission.data.remote.response.ListStoryItem
 import com.example.storyappsubmission.databinding.ActivityHomeBinding
 import com.example.storyappsubmission.helper.showToast
 import com.example.storyappsubmission.ui.adapter.StoryAdapter
@@ -40,9 +40,9 @@ class HomeActivity : AppCompatActivity() {
         binding.rvStoryCard.layoutManager = layoutManager
 
         // ViewModels
-        storyViewModel.listStories.observe(this) { stories ->
-            setStoriesData(stories)
-        }
+        //        storyViewModel.listStories.observe(this) { stories ->
+        //            setStoriesData(stories)
+        //        }
 
         storyViewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) binding.progressBar.visibility = View.VISIBLE
@@ -53,20 +53,29 @@ class HomeActivity : AppCompatActivity() {
             errorMessage?.showToast(this)
         }
 
+        getStories()
     }
 
-    override fun onResume() {
-        super.onResume()
-        storyViewModel.getAllStories()
-    }
+    //    override fun onResume() {
+    //        super.onResume()
+    //        storyViewModel.getAllStories()
+    //    }
 
-    private fun setStoriesData(storiesList: List<ListStoryItem>) {
+    //    private fun setStoriesData(storiesList: List<ListStoryItem>) {
+    //        val adapter = StoryAdapter()
+    //        adapter.submitList(storiesList)
+    //        binding.rvStoryCard.adapter = adapter
+    //
+    //        if (storiesList.isEmpty()) binding.tvEmpty.visibility = View.VISIBLE
+    //        else binding.tvEmpty.visibility = View.GONE
+    //    }
+
+    private fun getStories() {
         val adapter = StoryAdapter()
-        adapter.submitList(storiesList)
         binding.rvStoryCard.adapter = adapter
-
-        if (storiesList.isEmpty()) binding.tvEmpty.visibility = View.VISIBLE
-        else binding.tvEmpty.visibility = View.GONE
+        storyViewModel.story.observe(this) {
+            adapter.submitData(lifecycle, it)
+        }
     }
 
     private fun initializeToolbar() {

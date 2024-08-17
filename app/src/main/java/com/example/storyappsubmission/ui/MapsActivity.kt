@@ -2,20 +2,27 @@ package com.example.storyappsubmission.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.example.storyappsubmission.R
+import com.example.storyappsubmission.data.remote.response.ListStoryItem
 
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.storyappsubmission.databinding.ActivityMapsBinding
+import com.example.storyappsubmission.helper.showToast
+import com.example.storyappsubmission.viewmodel.MapsViewModel
+import com.google.android.gms.maps.CameraUpdateFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private val mapsViewModel: MapsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +34,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        mapsViewModel.listStories.observe(this) { stories ->
+            setMarkers(stories)
+        }
+
+        mapsViewModel.feedbackToast.observe(this) { errorMessage ->
+            errorMessage?.showToast(this)
+        }
     }
 
     /**
@@ -40,10 +55,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+    }
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    private fun setMarkers(data: List<ListStoryItem>) {
+        data.forEach { item ->
+            if (item.lat != null && item.lon != null) {
+                val latLng = LatLng(item.lat, item.lon)
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(latLng)
+                        .title(item.name)
+                        .snippet(item.description)
+                )
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 1f))
+            }
+        }
     }
 }

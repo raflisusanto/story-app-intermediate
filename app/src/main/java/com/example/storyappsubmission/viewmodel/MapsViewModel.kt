@@ -4,23 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.example.storyappsubmission.data.remote.response.ErrorResponse
 import com.example.storyappsubmission.data.remote.response.ListStoryItem
 import com.example.storyappsubmission.domain.repository.StoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import javax.inject.Inject
 
 @HiltViewModel
-class StoryViewModel @Inject constructor(
+class MapsViewModel @Inject constructor(
     private val repository: StoryRepository
-) : ViewModel() {
+) : ViewModel(){
     private val _listStories = MutableLiveData<List<ListStoryItem>>()
-    //    val listStories: LiveData<List<ListStoryItem>> = _listStories
+    val listStories: LiveData<List<ListStoryItem>> = _listStories
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -28,37 +23,16 @@ class StoryViewModel @Inject constructor(
     private val _feedbackToast = MutableLiveData<String>()
     val feedbackToast: LiveData<String> = _feedbackToast
 
-    val story: LiveData<PagingData<ListStoryItem>> =
-        repository.getAllPagedStories().cachedIn(viewModelScope)
-
     init {
-        getAllStories()
+        getStoriesWithLocation()
     }
 
-    fun getAllStories() {
+    private fun getStoriesWithLocation() {
         _isLoading.value = true
-        repository.getAllStories(onSuccess = { storyResponse ->
+        repository.getStoriesWithLocation(onSuccess = { storyResponse ->
             Log.d(TAG, "onResponse: ${storyResponse.message}")
             _listStories.value = storyResponse.listStory!!
             _isLoading.value = false
-        }, onError = { errorResponse ->
-            showError(errorResponse)
-            _isLoading.value = false
-        })
-    }
-
-    fun addNewStory(
-        file: MultipartBody.Part,
-        description: RequestBody,
-        onSuccess: () -> Unit
-    ) {
-        _isLoading.value = true
-        repository.addNewStory(file, description, onSuccess = { storyResponse ->
-            Log.d(TAG, "onResponse: ${storyResponse.message}")
-            _feedbackToast.value = storyResponse.message
-            _isLoading.value = false
-
-            onSuccess()
         }, onError = { errorResponse ->
             showError(errorResponse)
             _isLoading.value = false
@@ -73,6 +47,6 @@ class StoryViewModel @Inject constructor(
     }
 
     companion object {
-        private const val TAG = "StoryViewModel"
+        private const val TAG = "MapsViewModel"
     }
 }

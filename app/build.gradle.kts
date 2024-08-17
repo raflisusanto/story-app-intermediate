@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.paging.runtime.ktx)
 
     kapt(libs.androidx.hilt.compiler)
     kapt(libs.hilt.android.compiler)
