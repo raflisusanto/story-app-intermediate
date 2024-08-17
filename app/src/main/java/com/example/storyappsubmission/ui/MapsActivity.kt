@@ -35,10 +35,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        mapsViewModel.listStories.observe(this) { stories ->
-            setMarkers(stories)
-        }
-
         mapsViewModel.feedbackToast.observe(this) { errorMessage ->
             errorMessage?.showToast(this)
         }
@@ -55,6 +51,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+
+        mapsViewModel.listStories.observe(this) { stories ->
+            setMarkers(stories)
+        }
     }
 
     private fun setMarkers(data: List<ListStoryItem>) {
