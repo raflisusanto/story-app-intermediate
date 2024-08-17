@@ -77,6 +77,11 @@ class HomeActivity : AppCompatActivity() {
                         removeSession()
                         true
                     }
+                    R.id.maps -> {
+                        val intent = Intent(this@HomeActivity, MapsActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
                     else -> false
                 }
             }
